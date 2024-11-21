@@ -9,7 +9,8 @@
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{float}   
+\usepackage{float}
+\usepackage{hyperref}   
 
 \geometry{
   top=2cm,  bottom=2cm,  left=1.5cm,  right=1.5cm
@@ -54,7 +55,7 @@
     \begin{enumerate}
         \item Registrar datos por el administrador mediante formularios.
         \item Generar modelos tabulares y gr\'aficos.
-        \item Gestionar los roles de la base de dato: usuarios especiales (administrador), los directores técnicos y 
+        \item Gestionar los roles de la base de datos: usuarios especiales (administrador), los directores técnicos y 
         los usuarios normales (periodistas).
         \item Presentar diferentes vistas para los distintos tipos de roles.
         \item Generar formularios para ingresar los datos a la base de datos por parte del administrador.
@@ -124,7 +125,7 @@
         \item El software deberá ser capaz de convertir los reportes solicitados a documentos PDF.
     \end{itemize}
 
-    \section*{Restricciones de Integridad}
+    \section*{Requerimientos informacionales}
 
     Para garantizar la consistencia, precisión y confiabilidad de los datos en el sistema de gestión de campeonatos 
     de béisbol, se han definido diversas restricciones de integridad. Estas restricciones aseguran que las 
@@ -134,40 +135,8 @@
     para ciertos atributos; y restricciones específicas del negocio, que reflejan reglas operativas propias del 
     sistema.
 
-    \subsection*{Integridad Referencial}
-    \begin{itemize}
-        \item \textbf{Relación entre peloteros y equipos:} Un pelotero pertenece a un equipo por serie. 
-        \begin{itemize}
-            \item Clave foránea: \texttt{Equipo\_ID} en la tabla de peloteros debe referenciar la clave primaria de 
-            la tabla de equipos.
-        \end{itemize}
-
-        \item \textbf{Relación entre equipos y series:} Un equipo está asociado a una serie específica. 
-        \begin{itemize}
-            \item Clave foránea: \texttt{Serie\_ID} en la tabla de equipos debe referenciar la clave primaria de la 
-            tabla de series.
-        \end{itemize}
-
-        \item \textbf{Relación entre juegos y series:} Cada juego pertenece a una serie única.
-        \begin{itemize}
-            \item Clave foránea: \texttt{Serie\_ID} en la tabla de juegos debe referenciar la clave primaria de la 
-            tabla de series.
-        \end{itemize}
-
-        \item \textbf{Relación entre alineaciones y juegos:} Cada alineación pertenece a un juego y un equipo 
-        específicos.
-        \begin{itemize}
-            \item Claves foráneas: \texttt{Juego\_ID} y \texttt{Equipo\_ID} en la tabla de alineaciones deben 
-            referenciar las claves primarias de las tablas de juegos y equipos, respectivamente.
-        \end{itemize}
-
-        \item \textbf{Relación entre lanzadores y juegos:} Los lanzadores registrados deben ser peloteros válidos 
-        que jugaron en el juego.
-        \begin{itemize}
-            \item Clave foránea: \texttt{Pelotero\_ID} en la tabla de lanzadores debe referenciar la clave primaria 
-            de la tabla de peloteros.
-        \end{itemize}
-    \end{itemize}
+    \subsection*{Datos a almacenar}
+    
 
     \subsection*{Integridad de Dominio}
     \begin{itemize}
@@ -190,10 +159,7 @@
         \begin{align*}
             \texttt{ManoDominante} \in \{\texttt{derecha, izquierda}\}
         \end{align*}
-    \end{itemize}
 
-    \subsection*{Restricciones Específicas del Negocio}
-    \begin{itemize}
         \item \textbf{Unicidad de pelotero por serie:} Un pelotero no puede pertenecer a más de un equipo dentro de 
         la misma serie.
         \begin{align*}
@@ -222,7 +188,6 @@
         duplicarse para una misma posición en la misma serie.
     \end{itemize}
 
-
     \newpage
 
     \section*{Modelo Conceptual}
@@ -240,79 +205,73 @@
 
     \section*{Modelo Relacional}
 
-    Para capturar la estructura conceptual del sistema de gestión de campeonatos de béisbol se utilizó MERX y a 
-    partir del él, se identificaron las dependencias funcionales que describen cómo los atributos de cada entidad 
-    y sus relaciones están determinados por sus claves primarias.Estas dependencias funcionales permitirán 
-    establecer la base para normalizar el diseño, asegurando un modelo lógico consistente y alineado con las 
-    necesidades del sistema. \\
-
-    En la siguiente tabla se muestran el universo y las dependencias funcionales sacadas a partir del MERX mostrado 
-    anteriormete. \newline 
-
-    %\vspace*{0.5cm}
+    A partir del MERX propuesto, se identificaron las dependencias funcionales que describen cómo los atributos de cada entidad y sus relaciones están determinados por sus claves primarias.
+    En la siguiente tabla se muestran el universo y las dependencias funcionales obtenidas: \newline
+    
     \begin{tabularx}{\textwidth}{|X|}
         \toprule
         \hfil $\textbf{R(U, F)}$ \\
         \midrule
         \vspace*{0.01cm}
-        $U = \{ $ NombreE, Tipo, P-ID, Años de experiencia, CI, Efectividad, Entidad representante, NombreP, Fecha 
-        de fin, Email, Edad, E-ID, S-ID, Fecha de inicio, EC-ID, No juegos ganados, EC-ID 2, Pitch, BP-ID, EP-ID, 
-        Promedio de bateo, AI-ID, T-ID, Color, F-ID, Promedio carreras, DT-ID, NombreEP, No juegos perdidos, 
-        NombreTS, Apellidos, Iniciales, W-ID, NombrePos, BP-ID 2, R-ID, U-ID, Mano dominante, M-ID, E-ID 2, 
-        Marcador Ganador, Marcador Perdedor $\} $ 
+        $U = \{ $ TipoR, Marcador Ganador, Fecha de fin, No juegos ganados, S-ID, EC-ID, Lanzador, Email, DT-ID, P-ID, F-ID, Apellidos, W-ID, Color, Fecha de inicio, BP-ID, Iniciales, Años de experiencia, R-ID, Edad, TipoS, Promedio de bateo, U-ID, ED-ID, EC-ID 2, Mano dominante, NombreE, NombrePos, No juegos perdidos, M-ID, NombreP, Promedio carreras, BP-ID 2, NombreTS, CI, AI-ID, E-ID, Marcador Perdedor, T-ID, Entidad representante, E-ID 2, Efectividad $\} $ 
         \vspace*{0.15cm} \\
         \midrule
         \vspace*{0.01cm}
         $F = \{$
-                U-ID $\rightarrow$ Email \newline
-                \hspace*{0.9cm} R-ID $\rightarrow$ Tipo \newline
-                \hspace*{0.9cm} CI $\rightarrow$ NombreP,  Edad,  Apellidos \newline
-                \hspace*{0.9cm} BP-ID $\rightarrow$ CI \newline
-                \hspace*{0.9cm} BP-ID $\rightarrow$ Promedio de bateo,  Años de experiencia \newline
-                \hspace*{0.9cm} W-ID $\rightarrow$ CI \newline
-                \hspace*{0.9cm} W-ID $\rightarrow$ DT-ID \newline
-                \hspace*{0.9cm} DT-ID $\rightarrow$ W-ID \newline
-                \hspace*{0.9cm} EP-ID $\rightarrow$ NombreEP \newline
-                \hspace*{0.9cm} E-ID $\rightarrow$ NombreE,  Color,  Entidad representante,  Iniciales \newline
-                \hspace*{0.9cm} E-ID,  AI-ID $\rightarrow$ E-ID,  AI-ID \newline
-                \hspace*{0.9cm} T-ID,  S-ID $\rightarrow$ Nombre,  Tipo,  Fecha de inicio,  Fecha de fin \newline
-                \hspace*{0.9cm} P-ID $\rightarrow$ NombrePos \newline
-                \hspace*{0.9cm} P-ID $\rightarrow$ Pitch \newline
-                \hspace*{0.9cm} Pitch $\rightarrow$ P-ID \newline
-                \hspace*{0.9cm} CJ-ID $\rightarrow$ CJ-ID \newline
-                \hspace*{0.9cm} U-ID $\rightarrow$ R-ID \newline
-                \hspace*{0.9cm} W-ID $\rightarrow$ EP-ID \newline
-                \hspace*{0.9cm} DT-ID $\rightarrow$ EP-ID \newline
-                \hspace*{0.9cm} EP-ID $\rightarrow$ DT-ID \newline
-                \hspace*{0.9cm} EP-ID $\rightarrow$ E-ID \newline
-                \hspace*{0.9cm} E-ID $\rightarrow$ EP-ID \newline
-                \hspace*{0.9cm} T-ID,  S-ID,  E-ID $\rightarrow$ T-ID,  S-ID,  E-ID \newline
-                \hspace*{0.9cm} T-ID,  S-ID,  BP-ID $\rightarrow$ E-ID \newline
-                \hspace*{0.9cm} T-ID,  S-ID,  P-ID $\rightarrow$ BP-ID \newline
-                \hspace*{0.9cm} BP-ID,  Pitch $\rightarrow$ Mano dominante,  No juegos ganados,  No juegos perdidos,  Promedio carreras \newline
-                \hspace*{0.9cm} BP-ID,  P-ID $\rightarrow$ Efectividad \newline
-                \hspace*{0.9cm} E-ID,  AI-ID,  BP-ID,  P-ID $\rightarrow$ E-ID,  AI-ID,  BP-ID,  P-ID \newline
-                \hspace*{0.9cm} EC-ID $\rightarrow$ E-ID,  AI-ID \newline
-                \hspace*{0.9cm} BP-ID,  F-ID $\rightarrow$ BP-ID 2,  P-ID,  E-ID \newline
-                \hspace*{0.9cm} BP-ID,  F-ID $\rightarrow$ EC-ID \newline
-                \hspace*{0.9cm} EC-ID,  F-ID $\rightarrow$ EC-ID 2,  T-ID,  S-ID, M-ID \newline 
-                \hspace*{0.9cm} M-ID $\rightarrow$ E-ID, E-ID 2, Marcador Ganador , Marcador Perdedor \newline       
+        \hspace*{0.9cm} U-ID $\rightarrow$ Email, \newline
+        \hspace*{0.9cm} R-ID $\rightarrow$ TipoR, \newline
+        \hspace*{0.9cm} U-ID $\rightarrow$ R-ID, \newline
+        \hspace*{0.9cm} CI $\rightarrow$ NombreP, Edad, Apellidos, \newline
+        \hspace*{0.9cm} BP-ID $\rightarrow$ CI, \newline
+        \hspace*{0.9cm} CI $\rightarrow$ BP-ID, \newline
+        \hspace*{0.9cm} BP-ID $\rightarrow$ Promedio de bateo, Años de experiencia, \newline
+        \hspace*{0.9cm} W-ID $\rightarrow$ CI, \newline
+        \hspace*{0.9cm} CI $\rightarrow$ W-ID, \newline
+        \hspace*{0.9cm} W-ID $\rightarrow$ DT-ID, \newline
+        \hspace*{0.9cm} DT-ID $\rightarrow$ W-ID, \newline
+        \hspace*{0.9cm} ED-ID $\rightarrow$ ED-ID, \newline
+        \hspace*{0.9cm} E-ID $\rightarrow$ NombreE, Color, Entidad representante, Iniciales, \newline
+        \hspace*{0.9cm} E-ID, AI-ID $\rightarrow$ E-ID, AI-ID, \newline
+        \hspace*{0.9cm} T-ID $\rightarrow$ T-ID, \newline
+        \hspace*{0.9cm} T-ID, S-ID $\rightarrow$ NombreTS, TipoS, Fecha de inicio, Fecha de fin, \newline
+        \hspace*{0.9cm} P-ID $\rightarrow$ NombrePos, \newline
+        \hspace*{0.9cm} BP-ID $\rightarrow$ Lanzador, \newline
+        \hspace*{0.9cm} Lanzador $\rightarrow$ BP-ID, \newline
+        \hspace*{0.9cm} Lanzador $\rightarrow$ Mano dominante, No juegos ganados, No juegos perdidos, Promedio carreras, \newline
+        \hspace*{0.9cm} EC-ID $\rightarrow$ EC-ID, \newline
+        \hspace*{0.9cm} F-ID $\rightarrow$ F-ID, \newline
+        \hspace*{0.9cm} W-ID $\rightarrow$ ED-ID,  \newline
+        \hspace*{0.9cm} DT-ID $\rightarrow$ ED-ID, \newline
+        \hspace*{0.9cm} ED-ID $\rightarrow$ DT-ID, \newline
+        \hspace*{0.9cm} ED-ID $\rightarrow$ E-ID,  \newline
+        \hspace*{0.9cm} E-ID $\rightarrow$ ED-ID, \newline
+        \hspace*{0.9cm} T-ID, S-ID, E-ID $\rightarrow$ T-ID, S-ID, E-ID , \newline
+        \hspace*{0.9cm} T-ID, S-ID, BP-ID $\rightarrow$ E-ID, \newline
+        \hspace*{0.9cm} T-ID, S-ID, P-ID $\rightarrow$ BP-ID, \newline
+        \hspace*{0.9cm} BP-ID, P-ID $\rightarrow$ Efectividad, \newline
+        \hspace*{0.9cm} E-ID, AI-ID, BP-ID, P-ID $\rightarrow$ E-ID, AI-ID, BP-ID, P-ID, \newline
+        \hspace*{0.9cm} EC-ID $\rightarrow$ E-ID, AI-ID, \newline
+        \hspace*{0.9cm} BP-ID, F-ID $\rightarrow$ BP-ID 2, P-ID, \newline
+        \hspace*{0.9cm} BP-ID, F-ID $\rightarrow$ EC-ID, \newline
+        \hspace*{0.9cm} EC-ID, F-ID $\rightarrow$ EC-ID 2, T-ID, S-ID, \newline
+        \hspace*{0.9cm} EC-ID, F-ID $\rightarrow$ M-ID, \newline
+        \hspace*{0.9cm} M-ID $\rightarrow$ E-ID, E-ID 2, Marcador Ganador, Marcador Perdedor        
         $\} $
         \vspace*{0.15cm} \\    
         \bottomrule
     \end{tabularx}
 
-    \vspace*{0.5cm}
-
-    En la siguiente tabla se muestran los resultados de aplicar el algoritmo del cubrimiento mínimo a partir de las 
-    dependencias funcionales expuestas.
+    \vspace*{0.3cm}
+    En la siguiente tabla se muestran los resultados de aplicar el algoritmo del cubrimiento mínimo a partir de las dependencias funcionales expuestas. 
+    El código del algoritmo se puede encontrar en la página de este proyecto en GitHub. \url{https://github.com/gaboCiber/Baseball-Champions/} 
 
     \begin{tabularx}{\textwidth}{|X|X|X|}
         \toprule
         \hfil F ' & \hfil F ' '  & \hfil F ' ' '  \\
         \midrule
         U-ID $\rightarrow$ Email \newline 
-        R-ID $\rightarrow$ Tipo \newline 
+        R-ID $\rightarrow$ TipoR \newline 
+        U-ID $\rightarrow$ R-ID \newline 
         CI $\rightarrow$ NombreP \newline 
         CI $\rightarrow$ Edad \newline 
         CI $\rightarrow$ Apellidos \newline 
@@ -322,35 +281,31 @@
         W-ID $\rightarrow$ CI \newline 
         W-ID $\rightarrow$ DT-ID \newline 
         DT-ID $\rightarrow$ W-ID \newline 
-        EP-ID $\rightarrow$ NombreEP \newline 
         E-ID $\rightarrow$ NombreE \newline 
         E-ID $\rightarrow$ Color \newline 
         E-ID $\rightarrow$ Entidad representante \newline 
         E-ID $\rightarrow$ Iniciales \newline 
-        E-ID, AI-ID $\rightarrow$ E-ID \newline 
-        E-ID, AI-ID $\rightarrow$ AI-ID \newline 
         T-ID, S-ID $\rightarrow$ NombreTS \newline 
-        T-ID, S-ID $\rightarrow$ Tipo \newline 
+        T-ID, S-ID $\rightarrow$ TipoS \newline 
         T-ID, S-ID $\rightarrow$ Fecha de inicio \newline 
         T-ID, S-ID $\rightarrow$ Fecha de fin \newline 
         P-ID $\rightarrow$ NombrePos \newline 
-        P-ID $\rightarrow$ Pitch \newline 
-        Pitch $\rightarrow$ P-ID \newline 
-        U-ID $\rightarrow$ R-ID \newline 
-        W-ID $\rightarrow$ EP-ID \newline 
-        DT-ID $\rightarrow$ EP-ID \newline 
-        EP-ID $\rightarrow$ DT-ID \newline 
-        EP-ID $\rightarrow$ E-ID \newline 
-        E-ID $\rightarrow$ EP-ID \newline 
+        BP-ID $\rightarrow$ Lanzador \newline 
+        Lanzador $\rightarrow$ BP-ID \newline 
+        Lanzador $\rightarrow$ Mano dominante \newline 
+        Lanzador $\rightarrow$ No juegos ganados \newline 
+        Lanzador $\rightarrow$ No juegos perdidos \newline 
+        Lanzador $\rightarrow$ Promedio carreras \newline 
+        W-ID $\rightarrow$ ED-ID \newline 
+        DT-ID $\rightarrow$ ED-ID \newline 
+        ED-ID $\rightarrow$ DT-ID \newline 
+        ED-ID $\rightarrow$ E-ID \newline 
+        E-ID $\rightarrow$ ED-ID \newline 
         T-ID, S-ID, E-ID $\rightarrow$ T-ID \newline 
         T-ID, S-ID, E-ID $\rightarrow$ S-ID \newline 
         T-ID, S-ID, E-ID $\rightarrow$ E-ID \newline 
         T-ID, S-ID, BP-ID $\rightarrow$ E-ID \newline 
         T-ID, S-ID, P-ID $\rightarrow$ BP-ID \newline 
-        BP-ID, Pitch $\rightarrow$ Mano dominante \newline 
-        BP-ID, Pitch $\rightarrow$ No juegos ganados \newline 
-        BP-ID, Pitch $\rightarrow$ No juegos perdidos \newline 
-        BP-ID, Pitch $\rightarrow$ Promedio carreras \newline 
         BP-ID, P-ID $\rightarrow$ Efectividad \newline 
         E-ID, AI-ID, BP-ID, P-ID $\rightarrow$ E-ID \newline 
         E-ID, AI-ID, BP-ID, P-ID $\rightarrow$ AI-ID \newline 
@@ -360,11 +315,10 @@
         EC-ID $\rightarrow$ AI-ID \newline 
         BP-ID, F-ID $\rightarrow$ BP-ID 2 \newline 
         BP-ID, F-ID $\rightarrow$ P-ID \newline 
-        BP-ID, F-ID $\rightarrow$ E-ID \newline 
         BP-ID, F-ID $\rightarrow$ EC-ID \newline 
         EC-ID, F-ID $\rightarrow$ EC-ID 2 \newline 
         EC-ID, F-ID $\rightarrow$ T-ID \newline 
-        EC-ID, F-ID $\rightarrow$ S-ID \newline
+        EC-ID, F-ID $\rightarrow$ S-ID \newline 
         EC-ID, F-ID $\rightarrow$ M-ID \newline 
         M-ID $\rightarrow$ E-ID \newline 
         M-ID $\rightarrow$ E-ID 2 \newline 
@@ -372,7 +326,8 @@
         M-ID $\rightarrow$ Marcador Perdedor & 
 
         U-ID $\rightarrow$ Email \newline 
-        R-ID $\rightarrow$ Tipo \newline 
+        R-ID $\rightarrow$ TipoR \newline 
+        U-ID $\rightarrow$ R-ID \newline 
         CI $\rightarrow$ NombreP \newline 
         CI $\rightarrow$ Edad \newline 
         CI $\rightarrow$ Apellidos \newline 
@@ -382,36 +337,33 @@
         W-ID $\rightarrow$ CI \newline 
         W-ID $\rightarrow$ DT-ID \newline 
         DT-ID $\rightarrow$ W-ID \newline 
-        EP-ID $\rightarrow$ NombreEP \newline 
         E-ID $\rightarrow$ NombreE \newline 
         E-ID $\rightarrow$ Color \newline 
         E-ID $\rightarrow$ Entidad representante \newline 
         E-ID $\rightarrow$ Iniciales \newline 
         T-ID, S-ID $\rightarrow$ NombreTS \newline 
-        T-ID, S-ID $\rightarrow$ Tipo \newline 
+        T-ID, S-ID $\rightarrow$ TipoS \newline 
         T-ID, S-ID $\rightarrow$ Fecha de inicio \newline 
         T-ID, S-ID $\rightarrow$ Fecha de fin \newline 
         P-ID $\rightarrow$ NombrePos \newline 
-        P-ID $\rightarrow$ Pitch \newline 
-        Pitch $\rightarrow$ P-ID \newline 
-        U-ID $\rightarrow$ R-ID \newline 
-        W-ID $\rightarrow$ EP-ID \newline 
-        DT-ID $\rightarrow$ EP-ID \newline 
-        EP-ID $\rightarrow$ DT-ID \newline 
-        EP-ID $\rightarrow$ E-ID \newline 
-        E-ID $\rightarrow$ EP-ID \newline 
+        BP-ID $\rightarrow$ Lanzador \newline 
+        Lanzador $\rightarrow$ BP-ID \newline 
+        Lanzador $\rightarrow$ Mano dominante \newline 
+        Lanzador $\rightarrow$ No juegos ganados \newline 
+        Lanzador $\rightarrow$ No juegos perdidos \newline 
+        Lanzador $\rightarrow$ Promedio carreras \newline 
+        W-ID $\rightarrow$ ED-ID \newline 
+        DT-ID $\rightarrow$ ED-ID \newline 
+        ED-ID $\rightarrow$ DT-ID \newline 
+        ED-ID $\rightarrow$ E-ID \newline 
+        E-ID $\rightarrow$ ED-ID \newline 
         T-ID, S-ID, BP-ID $\rightarrow$ E-ID \newline 
         T-ID, S-ID, P-ID $\rightarrow$ BP-ID \newline 
-        BP-ID, Pitch $\rightarrow$ Mano dominante \newline 
-        BP-ID, Pitch $\rightarrow$ No juegos ganados \newline 
-        BP-ID, Pitch $\rightarrow$ No juegos perdidos \newline 
-        BP-ID, Pitch $\rightarrow$ Promedio carreras \newline 
         BP-ID, P-ID $\rightarrow$ Efectividad \newline 
         EC-ID $\rightarrow$ E-ID \newline 
         EC-ID $\rightarrow$ AI-ID \newline 
         BP-ID, F-ID $\rightarrow$ BP-ID 2 \newline 
         BP-ID, F-ID $\rightarrow$ P-ID \newline 
-        BP-ID, F-ID $\rightarrow$ E-ID \newline 
         BP-ID, F-ID $\rightarrow$ EC-ID \newline 
         EC-ID, F-ID $\rightarrow$ EC-ID 2 \newline 
         EC-ID, F-ID $\rightarrow$ T-ID \newline 
@@ -423,7 +375,8 @@
         M-ID $\rightarrow$ Marcador Perdedor & 
 
         U-ID $\rightarrow$ Email \newline 
-        R-ID $\rightarrow$ Tipo \newline 
+        R-ID $\rightarrow$ TipoR \newline 
+        U-ID $\rightarrow$ R-ID \newline 
         CI $\rightarrow$ NombreP \newline 
         CI $\rightarrow$ Edad \newline 
         CI $\rightarrow$ Apellidos \newline 
@@ -432,29 +385,27 @@
         BP-ID $\rightarrow$ Años de experiencia \newline 
         W-ID $\rightarrow$ CI \newline 
         DT-ID $\rightarrow$ W-ID \newline 
-        EP-ID $\rightarrow$ NombreEP \newline 
         E-ID $\rightarrow$ NombreE \newline 
         E-ID $\rightarrow$ Color \newline 
         E-ID $\rightarrow$ Entidad representante \newline 
         E-ID $\rightarrow$ Iniciales \newline 
         T-ID, S-ID $\rightarrow$ NombreTS \newline 
-        T-ID, S-ID $\rightarrow$ Tipo \newline 
+        T-ID, S-ID $\rightarrow$ TipoS \newline 
         T-ID, S-ID $\rightarrow$ Fecha de inicio \newline 
         T-ID, S-ID $\rightarrow$ Fecha de fin \newline 
         P-ID $\rightarrow$ NombrePos \newline 
-        P-ID $\rightarrow$ Pitch \newline 
-        Pitch $\rightarrow$ P-ID \newline 
-        U-ID $\rightarrow$ R-ID \newline 
-        W-ID $\rightarrow$ EP-ID \newline 
-        EP-ID $\rightarrow$ DT-ID \newline 
-        EP-ID $\rightarrow$ E-ID \newline 
-        E-ID $\rightarrow$ EP-ID \newline 
+        BP-ID $\rightarrow$ Lanzador \newline 
+        Lanzador $\rightarrow$ BP-ID \newline 
+        Lanzador $\rightarrow$ Mano dominante \newline 
+        Lanzador $\rightarrow$ No juegos ganados \newline 
+        Lanzador $\rightarrow$ No juegos perdidos \newline 
+        Lanzador $\rightarrow$ Promedio carreras \newline 
+        W-ID $\rightarrow$ ED-ID \newline 
+        ED-ID $\rightarrow$ DT-ID \newline 
+        ED-ID $\rightarrow$ E-ID \newline 
+        E-ID $\rightarrow$ ED-ID \newline 
         T-ID, S-ID, BP-ID $\rightarrow$ E-ID \newline 
         T-ID, S-ID, P-ID $\rightarrow$ BP-ID \newline 
-        BP-ID, Pitch $\rightarrow$ Mano dominante \newline 
-        BP-ID, Pitch $\rightarrow$ No juegos ganados \newline 
-        BP-ID, Pitch $\rightarrow$ No juegos perdidos \newline 
-        BP-ID, Pitch $\rightarrow$ Promedio carreras \newline 
         BP-ID, P-ID $\rightarrow$ Efectividad \newline 
         EC-ID $\rightarrow$ E-ID \newline 
         EC-ID $\rightarrow$ AI-ID \newline 
@@ -464,17 +415,17 @@
         EC-ID, F-ID $\rightarrow$ EC-ID 2 \newline 
         EC-ID, F-ID $\rightarrow$ T-ID \newline 
         EC-ID, F-ID $\rightarrow$ S-ID \newline 
+        EC-ID, F-ID $\rightarrow$ M-ID \newline 
         M-ID $\rightarrow$ E-ID \newline 
-        M-ID $\rightarrow$ E-ID 2 \newline  
+        M-ID $\rightarrow$ E-ID 2 \newline 
         M-ID $\rightarrow$ Marcador Ganador \newline 
-        M-ID $\rightarrow$ Marcador Perdedor \\
+        M-ID $\rightarrow$ Marcador Perdedor  \\
         \bottomrule
     \end{tabularx}
 
     \newpage
 
-    Luego a partir de la ejecución del algoritmo de cubrimiento mínimo se pudieron identificar los siguientes 
-    atributos y dependencias redundantes. \newline
+    Luego a partir de la ejecución del algoritmo de cubrimiento mínimo se pudieron identificar los siguientes atributos y dependencias redundantes. \newline
 
     \textbf{Atributos redundantes:}
     \begin{itemize}
@@ -500,103 +451,92 @@
         \begin{itemize}
             \item DT-ID $\rightarrow$ W-ID $\land$  W-ID $\rightarrow$ EP-ID $\models$ DT-ID $\rightarrow$ EP-ID  \newline
         \end{itemize}
-
-        \item BP-ID,  F-ID $\rightarrow$ E-ID
-
-        \begin{itemize}
-            \item BP-ID,  F-ID $\rightarrow$ CJ-ID $\land$ CJ-ID $\rightarrow$ EC-ID $\models$ BP-ID,  F-ID $\rightarrow$ EC-ID \newline
-            \item BP-ID,  F-ID $\rightarrow$ EC-ID $\land$ EC-ID $\rightarrow$ E-ID $\models$ BP-ID,  F-ID $\rightarrow$ E-ID \newline
-        \end{itemize}
     \end{itemize}
 
-    Y por lo tanto a partir de lo anteriormente visto se pudo obtener el siguiente conjunto de dependencias 
-    funcionales irreducibles. \newline
+    Y por lo tanto a partir de lo anteriormente visto se pudo obtener el siguiente conjunto de dependencias funcionales irreducibles. \newline
 
     \begin{tabularx}{\textwidth}{|X|}
         \toprule
-        \hfil \textbf{Conjunto irreducible de dependencias funcionales} \\
+        \hfil \textbf{Conjunto irreducible de dependencias funcionales de F(U,R)} \\
         \midrule
         U-ID $\rightarrow$ Email, R-ID \newline 
-        R-ID $\rightarrow$ Tipo \newline 
+        R-ID $\rightarrow$ TipoR \newline 
         CI $\rightarrow$ NombreP, Edad, Apellidos \newline 
-        BP-ID $\rightarrow$ CI, Promedio de bateo, Años de experiencia \newline 
-        W-ID $\rightarrow$ CI, EP-ID \newline 
+        BP-ID $\rightarrow$ CI, Promedio de bateo, Años de experiencia, Lanzador \newline 
+        W-ID $\rightarrow$ CI, ED-ID \newline 
         DT-ID $\rightarrow$ W-ID \newline 
-        EP-ID $\rightarrow$ NombreEP, DT-ID, E-ID \newline 
-        E-ID $\rightarrow$ NombreE, Color, Entidad representante, Iniciales, EP-ID \newline 
-        T-ID, S-ID $\rightarrow$ NombreTS, Tipo, Fecha de inicio, Fecha de fin \newline 
-        P-ID $\rightarrow$ NombrePos, Pitch \newline 
-        Pitch $\rightarrow$ P-ID \newline 
-        T-ID, BP-ID, S-ID $\rightarrow$ E-ID \newline 
-        T-ID, P-ID, S-ID $\rightarrow$ BP-ID \newline 
-        Pitch, BP-ID $\rightarrow$ Mano dominante, No juegos ganados, No juegos perdidos, Promedio carreras \newline 
-        P-ID, BP-ID $\rightarrow$ Efectividad \newline 
+        E-ID $\rightarrow$ NombreE, Color, Entidad representante, Iniciales, ED-ID \newline 
+        S-ID, T-ID $\rightarrow$ NombreTS, TipoS, Fecha de inicio, Fecha de fin \newline 
+        P-ID $\rightarrow$ NombrePos \newline 
+        Lanzador $\rightarrow$ BP-ID, Mano dominante, No juegos ganados, No juegos perdidos, Promedio carreras \newline 
+        ED-ID $\rightarrow$ DT-ID, E-ID \newline 
+        S-ID, T-ID, BP-ID $\rightarrow$ E-ID \newline 
+        S-ID, T-ID, P-ID $\rightarrow$ BP-ID \newline 
+        BP-ID, P-ID $\rightarrow$ Efectividad \newline 
         EC-ID $\rightarrow$ E-ID, AI-ID \newline 
-        F-ID, BP-ID $\rightarrow$ BP-ID 2, P-ID, EC-ID \newline 
+        BP-ID, F-ID $\rightarrow$ BP-ID 2, P-ID, EC-ID \newline 
         EC-ID, F-ID $\rightarrow$ EC-ID 2, T-ID, S-ID, M-ID \newline 
         M-ID $\rightarrow$ E-ID, E-ID 2, Marcador Ganador, Marcador Perdedor \\ 
         \bottomrule
     \end{tabularx}
 
-    Y entonces una de las posibles llaves cándidas de este cojunto irreducible de dependencias funcionales es: U-ID, 
-    F-ID, BP-ID. \newline
+    \newpage 
+
+    Y entonces una de las posibles llaves cándidas de este cojunto irreducible de dependencias funcionales es: U-ID, F-ID, BP-ID. \newline
 
     Esto se debe a que: tanto U-ID como F-ID son atributos que deben pertenecer a toda llave candidata, puesto que,
     no aparecen en la parte derecha de ninguna dependencias funcional del conjunto, es decir, no existe ningún
     otro atributo simple o compuesto que pueda obtener a U-ID o F-ID. \newline
     
-    Y por otra parte se tiene que la clausura $\{$BP-ID$\}_{F}^{+}$ = $\mathsf{U} - \{$ U-ID, F-ID$\}$. Por lo 
-    tanto U-ID, F-ID, BP-ID es una llave candidata. \newline
+    Y por otra parte se tiene que la clausura $\{$BP-ID$\}_{F}^{+}$ = $\mathsf{U} - \{$ U-ID, F-ID$\}$. Por lo tanto U-ID, F-ID, BP-ID es una llave candidata. \newline
 
-    Luego para garantizar un diseño lógico robusto y evitar redundancias, es necesario obtener un esquema de 
-    descomposición en Tercera Forma Normal (3FN),el cual puede ser obtenido , a patir de su algoritmo homólogo y 
-    tiene como entrada el conjunto irreducible de dependencias funcionales anteriomente expuesto. \newline
+    Luego para garantizar un diseño lógico robusto y evitar redundancias, es necesario obtener un esquema de descomposición en Tercera Forma Normal (3FN),
+    el cual puede ser obtenido , a partir de a patir de su algoritmo homologo y tiene como entrada el conjunto irreducible de dependencias funcionales anteriomente expuesto. \newline
       
     \begin{tabularx}{\textwidth}{|X|}
         \toprule
         \hfil \textbf{Descomposición en Tercera Forma Normal (3FN)} \\
         \midrule
-
         $ R_{1} ( U_{1} , F_{1} ) $ \newline 
-        $ U_{1} = \{{Email, \hspace{0.2cm}  U-ID, \hspace{0.2cm}  R-ID}\} $ \newline 
-        $ F_{1} = \{U-ID \rightarrow Email, \hspace{0.2cm} R-ID \} $\newline 
+        $ U_{1} = \{{U-ID, \hspace{0.2cm}  Email, \hspace{0.2cm}  R-ID}\} $ \newline 
+        $ F_{1} = \sqcap_{U_{_{1}}}(F) \equiv \{U-ID \rightarrow Email, \hspace{0.2cm} R-ID \} $\newline 
         
         $ R_{2} ( U_{2} , F_{2} ) $ \newline 
-        $ U_{2} = \{{Tipo, \hspace{0.2cm}  R-ID}\} $ \newline 
-        $ F_{2} = \{R-ID \rightarrow Tipo \} $\newline 
+        $ U_{2} = \{{TipoR, \hspace{0.2cm}  R-ID}\} $ \newline 
+        $ F_{2} = \sqcap_{U_{_{2}}}(F) \equiv \{R-ID \rightarrow TipoR \} $\newline 
         
         $ R_{3} ( U_{3} , F_{3} ) $ \newline 
-        $ U_{3} = \{{CI, \hspace{0.2cm}  Apellidos, \hspace{0.2cm}  Edad, \hspace{0.2cm}  NombreP}\} $ \newline 
-        $ F_{3} = \{CI \rightarrow NombreP, \hspace{0.2cm} Edad, \hspace{0.2cm} Apellidos \} $\newline 
+        $ U_{3} = \{{NombreP, \hspace{0.2cm}  CI, \hspace{0.2cm}  Edad, \hspace{0.2cm}  Apellidos}\} $ \newline 
+        $ F_{3} = \sqcap_{U_{_{3}}}(F) \equiv \{CI \rightarrow NombreP, \hspace{0.2cm} Edad, \hspace{0.2cm} Apellidos \} $\newline 
         
         $ R_{4} ( U_{4} , F_{4} ) $ \newline 
-        $ U_{4} = \{{BP-ID, \hspace{0.2cm} CI, \hspace{0.2cm}  A\tilde{n}os \hspace{0.2cm} de \hspace{0.2cm} experiencia, \hspace{0.2cm}  Promedio \hspace{0.2cm} de \hspace{0.2cm} bateo}\} $ \newline 
-        $ F_{4} = \{BP-ID \rightarrow CI, \hspace{0.2cm} Promedio \hspace{0.2cm} de \hspace{0.2cm} bateo, \hspace{0.2cm} A\tilde{n}os \hspace{0.2cm} de \hspace{0.2cm} experiencia \} $\newline 
+        $ U_{4} = \{{BP-ID, \hspace{0.2cm}  CI, \hspace{0.2cm}  Promedio \hspace{0.2cm} de \hspace{0.2cm} bateo, \hspace{0.2cm}  A\tilde{n}os \hspace{0.2cm} de \hspace{0.2cm} experiencia, \hspace{0.2cm}  Lanzador}\} $ \newline 
+        $ F_{4} = \sqcap_{U_{_{4}}}(F) \equiv \{BP-ID \rightarrow CI, \hspace{0.2cm} Promedio \hspace{0.2cm} de \hspace{0.2cm} bateo, \hspace{0.2cm} A\tilde{n}os \hspace{0.2cm} de \hspace{0.2cm} experiencia, \hspace{0.2cm} Lanzador \} $\newline 
         
         $ R_{5} ( U_{5} , F_{5} ) $ \newline 
-        $ U_{5} = \{{EP-ID, \hspace{0.2cm}  CI, \hspace{0.2cm}  W-ID}\} $ \newline 
-        $ F_{5} = \{W-ID \rightarrow CI, \hspace{0.2cm} EP-ID \} $\newline 
+        $ U_{5} = \{{ED-ID, \hspace{0.2cm}  CI, \hspace{0.2cm}  W-ID}\} $ \newline 
+        $ F_{5} = \sqcap_{U_{_{5}}}(F) \equiv \{W-ID \rightarrow CI, \hspace{0.2cm} ED-ID \} $\newline 
         
         $ R_{6} ( U_{6} , F_{6} ) $ \newline 
         $ U_{6} = \{{DT-ID, \hspace{0.2cm}  W-ID}\} $ \newline 
-        $ F_{6} = \{DT-ID \rightarrow W-ID \} $\newline 
+        $ F_{6} = \sqcap_{U_{_{6}}}(F) \equiv \{DT-ID \rightarrow W-ID \} $\newline 
         
         $ R_{7} ( U_{7} , F_{7} ) $ \newline 
-        $ U_{7} = \{{EP-ID, \hspace{0.2cm}  DT-ID, \hspace{0.2cm}  E-ID, \hspace{0.2cm}  NombreEP}\} $ \newline 
-        $ F_{7} = \{EP-ID \rightarrow NombreEP, \hspace{0.2cm} DT-ID, \hspace{0.2cm} E-ID \} $\newline 
+        $ U_{7} = \{{ED-ID, \hspace{0.2cm}  Entidad \hspace{0.2cm} representante, \hspace{0.2cm}  E-ID, \hspace{0.2cm}  NombreE, \hspace{0.2cm}  Iniciales, \hspace{0.2cm}  Color}\} $ \newline 
+        $ F_{7} = \sqcap_{U_{_{7}}}(F) \equiv \{E-ID \rightarrow NombreE, \hspace{0.2cm} Color, \hspace{0.2cm} Entidad \hspace{0.2cm} representante, \hspace{0.2cm} Iniciales, \hspace{0.2cm} ED-ID \} $\newline 
         
         $ R_{8} ( U_{8} , F_{8} ) $ \newline 
-        $ U_{8} = \{{Color, \hspace{0.2cm}  E-ID, \hspace{0.2cm}  Iniciales, \hspace{0.2cm}  NombreE, \hspace{0.2cm}  EP-ID, \hspace{0.2cm}  Entidad \hspace{0.2cm} representante}\} $ \newline 
-        $ F_{8} = \{E-ID \rightarrow NombreE, \hspace{0.2cm} Color, \hspace{0.2cm} Entidad \hspace{0.2cm} representante, \hspace{0.2cm} Iniciales, \hspace{0.2cm} EP-ID \} $\newline 
+        $ U_{8} = \{{Fecha \hspace{0.2cm} de \hspace{0.2cm} inicio, \hspace{0.2cm}  Fecha \hspace{0.2cm} de \hspace{0.2cm} fin, \hspace{0.2cm}  TipoS, \hspace{0.2cm}  S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  NombreTS}\} $ \newline 
+        $ F_{8} = \sqcap_{U_{_{8}}}(F) \equiv \{S-ID, \hspace{0.2cm} T-ID \rightarrow NombreTS, \hspace{0.2cm} TipoS, \hspace{0.2cm} Fecha \hspace{0.2cm} de \hspace{0.2cm} inicio, \hspace{0.2cm} Fecha \hspace{0.2cm} de \hspace{0.2cm} fin \} $\newline 
         
         $ R_{9} ( U_{9} , F_{9} ) $ \newline 
-        $ U_{9} = \{{Tipo, \hspace{0.2cm}  S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  Fecha \hspace{0.2cm} de \hspace{0.2cm} inicio, \hspace{0.2cm}  NombreTS, \hspace{0.2cm}  Fecha \hspace{0.2cm} de \hspace{0.2cm} fin}\} $ \newline 
-        $ F_{9} = \{S-ID, \hspace{0.2cm} T-ID \rightarrow NombreTS, \hspace{0.2cm} Tipo, \hspace{0.2cm} Fecha \hspace{0.2cm} de \hspace{0.2cm} inicio, \hspace{0.2cm} Fecha \hspace{0.2cm} de \hspace{0.2cm} fin \} $\newline 
+        $ U_{9} = \{{P-ID, \hspace{0.2cm}  NombrePos}\} $ \newline 
+        $ F_{9} = \sqcap_{U_{_{9}}}(F) \equiv \{P-ID \rightarrow NombrePos \} $\newline 
         
         $ R_{10} ( U_{10} , F_{10} ) $ \newline 
-        $ U_{10} = \{{Pitch, \hspace{0.2cm}  NombrePos, \hspace{0.2cm}  P-ID}\} $ \newline 
-        $ F_{10} = \{P-ID \rightarrow NombrePos, \hspace{0.2cm} Pitch \hspace{0.2cm} ; \hspace{0.2cm}Pitch \rightarrow P-ID \} $ \newline \\
-               
+        $ U_{10} = \{{BP-ID, \hspace{0.1cm}  No \hspace{0.1cm} juegos \hspace{0.1cm} ganados, \hspace{0.1cm}  Mano \hspace{0.1cm} dominante, \hspace{0.1cm}  Promedio \hspace{0.1cm} carreras, \hspace{0.1cm}  No \hspace{0.1cm} juegos \hspace{0.1cm} perdidos, \hspace{0.1cm}  Lanzador}\} $ \newline 
+        $ F_{10} = \sqcap_{U_{_{10}}}(F) \equiv \{Lanzador \rightarrow BP-ID, \hspace{0.05cm} Mano \hspace{0.1cm} dominante, \hspace{0.05cm} \hspace{0.1cm} Juegos \hspace{0.1cm} ganados, \hspace{0.05cm} \hspace{0.1cm} Juegos \hspace{0.1cm} perdidos, \hspace{0.05cm} Promedio \hspace{0.1cm} carreras \} $\newline \\
+                       
         \bottomrule
     \end{tabularx}
 
@@ -604,39 +544,39 @@
         \toprule
         \hfil \textbf{Descomposición en Tercera Forma Normal (3FN)} \\
         \midrule
-        
         $ R_{11} ( U_{11} , F_{11} ) $ \newline 
-        $ U_{11} = \{{BP-ID, \hspace{0.2cm}  S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  E-ID}\} $ \newline 
-        $ F_{11} = \{BP-ID, \hspace{0.2cm} S-ID, \hspace{0.2cm} T-ID \rightarrow E-ID \} $\newline 
-        
+        $ U_{11} = \{{DT-ID, \hspace{0.2cm}  ED-ID, \hspace{0.2cm}  E-ID}\} $ \newline 
+        $ F_{11} = \sqcap_{U_{_{11}}}(F) \equiv \{ED-ID \rightarrow DT-ID, \hspace{0.2cm} E-ID \} $\newline 
+
         $ R_{12} ( U_{12} , F_{12} ) $ \newline 
-        $ U_{12} = \{{BP-ID, \hspace{0.2cm}  S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  P-ID}\} $ \newline 
-        $ F_{12} = \{S-ID, \hspace{0.2cm} T-ID, \hspace{0.2cm} P-ID \rightarrow BP-ID \} $ \newline
+        $ U_{12} = \{{S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  BP-ID, \hspace{0.2cm}  E-ID}\} $ \newline 
+        $ F_{12} = \sqcap_{U_{_{12}}}(F) \equiv \{S-ID, \hspace{0.2cm} T-ID, \hspace{0.2cm} BP-ID \rightarrow E-ID \} $\newline 
 
         $ R_{13} ( U_{13} , F_{13} ) $ \newline 
-        $ U_{13} = \{{Pitch, \hspace{0.2cm}  No \hspace{0.2cm} juegos \hspace{0.2cm} perdidos, \hspace{0.2cm}  No \hspace{0.2cm} juegos \hspace{0.2cm} ganados, \hspace{0.2cm}  BP-ID, \hspace{0.2cm}  Promedio \hspace{0.2cm} carreras, \hspace{0.2cm}  Mano \hspace{0.2cm} dominante}\} $ \newline 
-        $ F_{13} = \{BP-ID, \hspace{0.2cm} Pitch \rightarrow Mano \hspace{0.2cm} dominante, \hspace{0.2cm} No \hspace{0.2cm} juegos \hspace{0.2cm} ganados, \hspace{0.2cm} No \hspace{0.2cm} juegos \hspace{0.2cm} perdidos, \hspace{0.2cm} Promedio \hspace{0.2cm} carreras \} $\newline 
-        
+        $ U_{13} = \{{S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  BP-ID, \hspace{0.2cm}  P-ID}\} $ \newline 
+        $ F_{13} = \sqcap_{U_{_{13}}}(F) \equiv \{S-ID, \hspace{0.2cm} T-ID, \hspace{0.2cm} P-ID \rightarrow BP-ID \} $\newline 
+
         $ R_{14} ( U_{14} , F_{14} ) $ \newline 
-        $ U_{14} = \{{BP-ID, \hspace{0.2cm}  Efectividad, \hspace{0.2cm}  P-ID}\} $ \newline 
-        $ F_{14} = \{BP-ID, \hspace{0.2cm} P-ID \rightarrow Efectividad \} $\newline 
-        
+        $ U_{14} = \{{BP-ID, \hspace{0.2cm}  P-ID, \hspace{0.2cm}  Efectividad}\} $ \newline 
+        $ F_{14} = \sqcap_{U_{_{14}}}(F) \equiv \{BP-ID, \hspace{0.2cm} P-ID \rightarrow Efectividad \} $\newline 
+
         $ R_{15} ( U_{15} , F_{15} ) $ \newline 
-        $ U_{15} = \{{EC-ID, \hspace{0.2cm}  AI-ID, \hspace{0.2cm}  E-ID}\} $ \newline 
-        $ F_{15} = \{EC-ID \rightarrow E-ID, \hspace{0.2cm} AI-ID \} $\newline 
-        
+        $ U_{15} = \{{AI-ID, \hspace{0.2cm}  EC-ID, \hspace{0.2cm}  E-ID}\} $ \newline 
+        $ F_{15} = \sqcap_{U_{_{15}}}(F) \equiv \{EC-ID \rightarrow E-ID, \hspace{0.2cm} AI-ID \} $\newline 
+
         $ R_{16} ( U_{16} , F_{16} ) $ \newline 
-        $ U_{16} = \{{BP-ID \hspace{0.2cm} 2, \hspace{0.2cm}  EC-ID, \hspace{0.2cm}  P-ID, \hspace{0.2cm}  BP-ID, \hspace{0.2cm}  F-ID}\} $ \newline 
-        $ F_{16} = \{BP-ID, \hspace{0.2cm} F-ID \rightarrow BP-ID \hspace{0.2cm} 2, \hspace{0.2cm} P-ID, \hspace{0.2cm} EC-ID \} $\newline 
-        
+        $ U_{16} = \{{BP-ID, \hspace{0.2cm}  P-ID, \hspace{0.2cm}  F-ID, \hspace{0.2cm}  BP-ID \hspace{0.2cm} 2, \hspace{0.2cm}  EC-ID}\} $ \newline 
+        $ F_{16} = \sqcap_{U_{_{16}}}(F) \equiv \{BP-ID, \hspace{0.2cm} F-ID \rightarrow BP-ID \hspace{0.2cm} 2, \hspace{0.2cm} P-ID, \hspace{0.2cm} EC-ID \} $\newline 
+
         $ R_{17} ( U_{17} , F_{17} ) $ \newline 
-        $ U_{17} = \{{T-ID, \hspace{0.2cm}  EC-ID, \hspace{0.2cm}  M-ID, \hspace{0.2cm}  F-ID, \hspace{0.2cm}  EC-ID \hspace{0.2cm} 2, \hspace{0.2cm}  S-ID}\} $ \newline 
-        $ F_{17} = \{EC-ID, \hspace{0.2cm} F-ID \rightarrow EC-ID \hspace{0.2cm} 2, \hspace{0.2cm} T-ID, \hspace{0.2cm} S-ID, \hspace{0.2cm} M-ID \} $\newline 
-        
+        $ U_{17} = \{{EC-ID \hspace{0.2cm} 2, \hspace{0.2cm}  F-ID, \hspace{0.2cm}  M-ID, \hspace{0.2cm}  S-ID, \hspace{0.2cm}  T-ID, \hspace{0.2cm}  EC-ID}\} $ \newline 
+        $ F_{17} = \sqcap_{U_{_{17}}}(F) \equiv \{EC-ID, \hspace{0.2cm} F-ID \rightarrow EC-ID \hspace{0.2cm} 2, \hspace{0.2cm} T-ID, \hspace{0.2cm} S-ID, \hspace{0.2cm} M-ID \} $\newline 
+
         $ R_{18} ( U_{18} , F_{18} ) $ \newline 
-        $ U_{18} = \{{E-ID, \hspace{0.2cm}  Marcador \hspace{0.2cm} Perdedor, \hspace{0.2cm}  E-ID \hspace{0.2cm} 2, \hspace{0.2cm}  M-ID, \hspace{0.2cm}  Marcador \hspace{0.2cm} Ganador}\} $ \newline 
-        $ F_{18} = \{M-ID \rightarrow E-ID, \hspace{0.2cm} E-ID \hspace{0.2cm} 2, \hspace{0.2cm} Marcador \hspace{0.2cm} Ganador, \hspace{0.2cm} Marcador \hspace{0.2cm} Perdedor \} $\newline \\
-        
+        $ U_{18} = \{{Marcador \hspace{0.2cm} Ganador, \hspace{0.2cm}  M-ID, \hspace{0.2cm}  Marcador \hspace{0.2cm} Perdedor, \hspace{0.2cm}  E-ID, \hspace{0.2cm}  E-ID \hspace{0.2cm} 2}\} $ \newline 
+        $ F_{18} = \sqcap_{U_{_{18}}}(F) \equiv \{M-ID \rightarrow E-ID, \hspace{0.2cm} E-ID \hspace{0.2cm} 2, \hspace{0.2cm} Marcador \hspace{0.2cm} Ganador, \hspace{0.2cm} Marcador \hspace{0.2cm} Perdedor \} $\newline \\
+
+                
         \midrule
         \textbf{Llave del esquema de descomposición:} $U-ID, \hspace{0.2cm} F-ID, \hspace{0.2cm} BP-ID$  \\
         \bottomrule
@@ -653,25 +593,13 @@
         \caption{Tablas de la base de datos}
     \end{figure}
 
-
     \section*{Valoración del diseño de la Base de datos}
-    Como se utilizó el algoritmo de la Tercera Forma Normal (3FN) para obtener una descomposición de los esquemas 
-    relaciones, entonces se cumple por construcción la Propiedad de Preservación de Dependencias Funcionales (PPDF). \\
+    Como se utilizó el algoritmo de la Tercera Forma Normal (3FN) para obtener una descomposición de los esquemas relaciones, 
+    entonces se cumple por construcción la Propiedad de Preservación de Dependencias Funcionales (PPDF). \\
 
-    Luego, para buscar el cumplimiento de la Propiedad del Joint Sin Perdidas (PLJ) entonces se puede utilizar el 
-    Lema de Ullman, y por lo tanto se necesita adicionar al esquema una descomposición que contenga la llave del 
-    esquema R(F,U), es decir, \\
-
-   
-    \begin{tabularx}{\textwidth}{|X|}
-        \toprule
-        $ R_{19} ( U_{19} , F_{19} ) $ \newline 
-        $ U_{19} = \{U-ID, \hspace{0.2cm} F-ID, \hspace{0.2cm} BP-ID \} $ \newline 
-        $ F_{19} = \{U-ID, \hspace{0.2cm} F-ID, \hspace{0.2cm} BP-ID \rightarrow U-ID , \hspace{0.2cm} F-ID, \hspace{0.2cm} BP-ID \} $\\    
-        \bottomrule
-    \end{tabularx}
-
-    \vspace*{0.5cm}
+    Por otra parte, para comprobar la Propiedad del Joint Sin Perdidas (PLJ) se programó su algoritmo homólogo y dada su salida se obtiene que la PLJ no se cumple completamente en el esquema de descomposciones expuestos anteriormente.
+    Y esto se debe a que la descomposición $R_1$ y $R_2$ correspondientes a las entidades Usuario y Rol respectivamente, no se relacionan con ninguna otra descomposición, pero este resultado es el esperado pues el MERX, del cual se baso el esquema de descomposiciones, lo refleja de esa manera.
+    Luego, también es posible notar que en la tabla resultante la descomposición $R_{16}$  se relaciona con casi todos los atributos del universo, excepto los que conforman a $R_1$ y $R_2$, y por lo tanto se puede concluir que la PLJ se cumple parcialmente. \newline
 
     Y finalmente la descomposición anterior constituye un diseño correcto.
 
