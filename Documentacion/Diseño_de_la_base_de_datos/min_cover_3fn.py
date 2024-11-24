@@ -2,6 +2,9 @@ from itertools import chain, combinations  # Para manejar conjuntos y generar co
 import pandas as pd  # Para manejar estructuras tabulares (DataFrames)
 import plj  # Módulo externo, probablemente implementa la verificación de PLJ (Propiedad de Join sin Pérdidas)
 
+redundant_attrs = []
+redundant_dependencies = []
+
 # Genera el conjunto potencia de un conjunto `s`
 def power_set(s):
     """
@@ -78,6 +81,7 @@ def second_cover(fc):
         if add:  # Si no es redundante
             sc.append((l, r))  # Agrega la dependencia funcional al segundo cubrimiento
         else:
+            redundant_attrs.append((l,r))
             print(f"{l} ⟶ {r}")  # Muestra los atributos redundantes
 
     return sc  # Devuelve el segundo cubrimiento
@@ -217,18 +221,20 @@ def third_cover(sc, uni):
                     print(f"{l} ⟶ {r} === {L} ⟶ {r}")
                 else:
                     i -= 1  # Retrocede para revalidar
+                    redundant_dependencies.append((l,r))
                     print(f"{l} ⟶ {r}")
                 sc = scTemp
             else:
                 tc.append((l, r))  # Agrega la dependencia original
         else:
+            redundant_dependencies.append((l,r))
             print(f"{l} ⟶ {r} (iguales (0-0))")
         i += 1  # Avanza al siguiente índice
 
     return tc  # Devuelve el tercer cubrimiento
 
 # Agrupa dependencias funcionales por sus determinantes
-def group(tc, uni):
+def group(tc, uni, DFs):
     """
     Agrupa las dependencias funcionales por sus determinantes y añade atributos triviales.
 
@@ -263,7 +269,24 @@ def group(tc, uni):
     # Agregar los atributos restantes (triviales) como dependencias de sí mismos
     for tri in trivial:
         tcg[frozenset([tri])] = [tri]
-    
+        
+    for df in DFs:
+        left , right = left, right = df.split('⟶')
+        left = set([i.strip() for i in left.split(',')])
+        right = set([i.strip() for i in right.split(',')])
+        
+        change = False
+        for des in tcg:
+            l = closure_of_source_to_universe(des,tc)
+            r = closure_of_source_to_universe(tcg[des], tc)
+            if l.issuperset(left) and r.issuperset(right):
+                change = True
+                break
+        
+        if not change and not (list(left), list(right)) in redundant_dependencies :
+            tcg[frozenset(left)] = list(right)
+            
+        
     return tcg  # Devuelve el diccionario agrupado
 
 
@@ -312,7 +335,7 @@ def min_cover_3fn(DFs):
     fc, uni = first_cover(DFs)  # Primer cubrimiento
     sc = second_cover(fc)  # Segundo cubrimiento
     tc = third_cover(sc, uni)  # Tercer cubrimiento
-    tcgr = group(tc, uni)  # Agrupación de dependencias
+    tcgr = group(tc, uni, DFs)  # Agrupación de dependencias
     des = third_normal_form(tcgr)  # Descomposición en 3FN
 
     return uni, fc, sc, tc, tcgr, des  # Devuelve los elementos generados
@@ -565,7 +588,7 @@ def decomposition_to_tex(df):
     return text  # Devuelve el texto generado
 
 baseball = [
-    "U-ID ⟶ Email",
+    "U-ID ⟶ Email, Password",
     "R-ID ⟶ TipoR",
     "U-ID ⟶ R-ID",
     "CI ⟶ NombreP, Edad, Apellidos",
@@ -605,12 +628,10 @@ baseball = [
     "M-ID ⟶ E-ID, E-ID_2, Marcador_Ganador, Marcador_Perdedor",
 ]
 
-candidate_keys(baseball)
+#candidate_keys(baseball)
 
 uni, fc, sc, tc, tcgr, des = min_cover_3fn(baseball)
 
-print(uni)
-
-print_min_cover_3fn_to_txt(fc, sc, tc, tcgr, des, 'Generate/baseball2.txt')
-print_min_cover_3fn_to_tex(fc, sc, tc, tcgr, des, 'Generate/baseball2.tex')
-print_plj_to_txt(uni, fc, des, 'Generate/baseball2.txt')
+print_min_cover_3fn_to_txt(fc, sc, tc, tcgr, des, 'Generate/baseball.txt')
+print_min_cover_3fn_to_tex(fc, sc, tc, tcgr, des, 'Generate/baseball.tex')
+print_plj_to_txt(uni, fc, des, 'Generate/baseball.txt')
